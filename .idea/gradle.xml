@@ -9,8 +9,8 @@
         <option name="gradleJvm" value="1.7" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/../../../joozey/Projects/MindwaveDemo" />
-            <option value="$PROJECT_DIR$/../../../joozey/Projects/MindwaveDemo/app" />
+            <option value="$PROJECT_DIR$/../../../joozey/Projects/Adressable" />
+            <option value="$PROJECT_DIR$/../../../joozey/Projects/Adressable/app" />
           </set>
         </option>
       </GradleProjectSettings>

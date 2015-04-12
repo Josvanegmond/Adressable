@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/../../../joozey/Projects/MindwaveDemo/MindwaveDemo.iml" filepath="$PROJECT_DIR$/../../../joozey/Projects/MindwaveDemo/MindwaveDemo.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../../../joozey/Projects/MindwaveDemo/app/app.iml" filepath="$PROJECT_DIR$/../../../joozey/Projects/MindwaveDemo/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../../joozey/Projects/Adressable/Adressable.iml" filepath="$PROJECT_DIR$/../../../joozey/Projects/Adressable/Adressable.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../../joozey/Projects/Adressable/app/app.iml" filepath="$PROJECT_DIR$/../../../joozey/Projects/Adressable/app/app.iml" />
     </modules>
   </component>
 </project>

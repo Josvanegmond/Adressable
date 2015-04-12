@@ -41,7 +41,7 @@ public class MindSurface extends SurfaceView
 
         this.setBackgroundColor(Color.parseColor("#ff9999"));
 
-        bufferedLinesArray = new ArrayList[4];
+        bufferedLinesArray = new ArrayList[8];
 
         for( int i = 0; i < bufferedLinesArray.length; i++ ) {
             bufferedLinesArray[i] = new ArrayList<Float>();
@@ -51,16 +51,37 @@ public class MindSurface extends SurfaceView
     @Override
     public void draw( Canvas canvas )
     {
-        super.draw( canvas );
+        super.draw(canvas);
+
+        String[] labels = {
+                "delta",
+                "highalpha",
+                "lowalpha",
+                "highbeta",
+                "lowbeta",
+                "midgamma",
+                "lowgamma",
+                "theta"
+        };
 
         int[] colorTable = {
                 Color.RED,
                 Color.BLUE,
                 Color.GREEN,
-                Color.CYAN
+                Color.CYAN,
+                Color.YELLOW,
+                Color.GRAY,
+                Color.MAGENTA,
+                Color.WHITE
         };
 
-        paint.setColor( Color.BLACK );
+        for( int i = 0; i < colorTable.length; i++ )
+        {
+            paint.setColor( colorTable[i] );
+            canvas.drawText( labels[i], 20, getHeight() - 250 + i*20, paint );
+        }
+
+        paint.setColor(Color.BLACK);
         canvas.drawLine( 0f, 50 + (float)getHeight() * 0.5f, (float)getWidth(), 50 + (float)getHeight() * 0.5f, paint );
 
         for( int n = 0; n < bufferedLinesArray.length; n++ )
@@ -69,7 +90,7 @@ public class MindSurface extends SurfaceView
             ArrayList<Float> bufferedLines = bufferedLinesArray[n];
             for (int i = 0; i < bufferedLines.size() - 1; i++)
             {
-                canvas.drawLine(i * (getWidth() / bufferedLines.size()), getHeight()*0.5f + bufferedLines.get(i), (i + 1) * (getWidth() / bufferedLines.size()), getHeight()*0.5f + bufferedLines.get(i + 1), paint);
+                canvas.drawLine(i * (getWidth() / bufferedLines.size()), getHeight() * 0.5f + bufferedLines.get(i), (i + 1) * (getWidth() / bufferedLines.size()), getHeight() * 0.5f + bufferedLines.get(i + 1), paint);
             }
         }
     }
@@ -95,10 +116,17 @@ public class MindSurface extends SurfaceView
     }
 
     public void pushGraphData(int graphNumber, int msg) {
+        pushGraphData( graphNumber, (float) msg );
+    }
 
-        bufferedLinesArray[graphNumber].add(new Float(msg));
-        if( bufferedLinesArray[graphNumber].size() > 50 ) { bufferedLinesArray[graphNumber].remove(0);
-        }
-        repaint();
+    public void pushGraphData(int graphNumber, double msg) {
+        pushGraphData( graphNumber, (float) msg );
+    }
+
+    public void pushGraphData(int graphNumber, float msg) {
+
+        float value = msg;
+        bufferedLinesArray[graphNumber].add(value);
+        if( bufferedLinesArray[graphNumber].size() > 50 ) { bufferedLinesArray[graphNumber].remove(0);}
     }
 }

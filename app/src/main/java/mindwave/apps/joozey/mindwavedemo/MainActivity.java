@@ -13,6 +13,7 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.neurosky.thinkgear.TGDevice;
+import com.neurosky.thinkgear.TGEegPower;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,6 +23,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -56,7 +58,7 @@ public class MainActivity extends ActionBarActivity {
                 if (mindClient == null)
                 {
                     try {
-                        mindClient = new DBMindClient(new URL("https://d85ec49d-9565-4dea-b298-0ae7863b2f19-bluemix.cloudant.com/samples/_bulk_docs"));
+                        mindClient = new DBMindClient(new URL("https://d85ec49d-9565-4dea-b298-0ae7863b2f19-bluemix.cloudant.com/samples2/_bulk_docs"));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -70,10 +72,10 @@ public class MainActivity extends ActionBarActivity {
                         synchronized ( mindSampleJSONArray )
                         {
                             jsonObject.put("docs", mindSampleJSONArray);
-                            mindClient.push(jsonObject.toString());
                             mindSampleJSONArray = new JSONArray();
                         }
 
+                        mindClient.push(jsonObject.toString());
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -185,7 +187,7 @@ public class MainActivity extends ActionBarActivity {
                     case TGDevice.MSG_ATTENTION:
                         bufferJSONMindData("attention", msg.arg1);
                         attentionLabel.setText("attention data: " + msg.arg1);
-                        mindSurface.pushGraphData(0, msg.arg1);
+//                        mindSurface.pushGraphData(0, msg.arg1);
                         break;
                     case TGDevice.MSG_HEART_RATE:
                         bufferJSONMindData("heartrate", msg.arg1);
@@ -194,14 +196,35 @@ public class MainActivity extends ActionBarActivity {
                     case TGDevice.MSG_MEDITATION:
                         bufferJSONMindData("meditation", msg.arg1);
                         meditationLabel.setText("meditation data: " + msg.arg1);
-                        mindSurface.pushGraphData( 1, msg.arg1 );
+//                        mindSurface.pushGraphData( 1, msg.arg1 );
                         break;
                     case TGDevice.MSG_BLINK:
                         blinks++;
                         blinkLabel.setText("measured blink strength: " + msg.arg1 + "\tblinks: " + blinks);
                         bufferJSONMindData("blink", msg.arg1);
 //                        mindSurface.pushGraphData( 2, msg.arg1 );
+                        break;
+                    case TGDevice.MSG_EEG_POWER:
+                        TGEegPower power = (TGEegPower)msg.obj;
+                        bufferJSONMindData("delta", power.delta);
+                        bufferJSONMindData("highalpha", power.highAlpha);
+                        bufferJSONMindData("lowalpha", power.lowAlpha);
+                        bufferJSONMindData("highbeta", power.highBeta);
+                        bufferJSONMindData("lowbeta", power.lowBeta);
+                        bufferJSONMindData("midgamma", power.midGamma);
+                        bufferJSONMindData("lowgamma", power.lowGamma);
+                        bufferJSONMindData("theta", power.theta);
 
+                        mindSurface.pushGraphData(0, Math.log(power.delta) / Math.log(2) * 10. );
+                        mindSurface.pushGraphData(1, Math.log(power.highAlpha) / Math.log(2) * 10. );
+                        mindSurface.pushGraphData(2, Math.log(power.lowAlpha) / Math.log(2) * 10. );
+                        mindSurface.pushGraphData(3, Math.log(power.highBeta) / Math.log(2) * 10. );
+                        mindSurface.pushGraphData(4, Math.log(power.lowBeta) / Math.log(2) * 10. );
+                        mindSurface.pushGraphData(5, Math.log(power.midGamma) / Math.log(2) * 10. );
+                        mindSurface.pushGraphData(6, Math.log(power.lowGamma) / Math.log(2) * 10. );
+                        mindSurface.pushGraphData(7, Math.log(power.theta) / Math.log(2) * 10. );
+
+                        mindSurface.repaint();
                         break;
                     case TGDevice.MSG_RAW_DATA:
                         break;
